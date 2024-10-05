@@ -27,24 +27,40 @@ export const SigninForm=() => {
 
     const handleSubmit=useCallback(async (data: FormValues) => {
         setLoading(true)
-        try {
-            const response=await fetch('/api/auth/signin',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
+        return fetch('/api/auth/signin',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(res => {
+                if(res.ok) {
+                    return res
+                }
+                else if(res.status===401) {
+                    throw new Error('Credenciales incorrectas')
+                }
+                else {
+                    throw new Error('Error al iniciar sesión')
+                }
             })
-            if(!response.ok) {
-                return form.setError("password",{message: "Credenciales incorrectas"})
-            }
-            form.reset()
-            location.replace('/dashboard')
-        } catch(error) {
-            form.setError("password",{message: "Algo salio mal"})
-        } finally {
-            setLoading(false)
-        }
+            .then(() => {
+                form.reset()
+                location.replace('/dashboard')
+            })
+            .catch((error) => {
+                console.log(error)
+                form.setError('password',{
+                    message: error?.message||"Algo salio mal",
+                })
+                form.setError('email',{
+                    message: ''
+                })
+            })
+            .finally(() => {
+                setLoading(false)
+            })
     },[])
 
     return (
@@ -84,7 +100,7 @@ export const SigninForm=() => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full my-10" disabled={loading}>
+                            <Button type="submit" className="w-full" disabled={loading}>
                                 {loading&&<Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                 Iniciar sesión
                             </Button>
