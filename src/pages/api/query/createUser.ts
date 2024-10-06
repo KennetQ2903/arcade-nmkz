@@ -9,8 +9,6 @@ export const POST: APIRoute=async ({request}) => {
         password: formData.password
     })
 
-    console.log('error signup',error)
-
     if(error) {
         return new Response(error.message,{status: 500})
     }
@@ -22,8 +20,6 @@ export const POST: APIRoute=async ({request}) => {
         rol_id: formData.rol_id,
         localidad_id: formData?.localidad_id||null
     })
-
-    console.log('error insert',insertError)
 
     if(insertError) {
         return new Response(insertError.message,{status})

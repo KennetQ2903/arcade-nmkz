@@ -46,7 +46,29 @@ const columns=[
     columnHelper.display({
         id: 'actions',
         header: '',
-        cell: () => {
+        cell: (info) => {
+            const handleDelete=async () => {
+                console.log(JSON.stringify(info.cell.row.original.id))
+                return fetch('/api/query/deleteUserById',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: info.cell.row.original.id})
+                })
+                    .then(res => {
+                        if(res.ok) {
+                            window.location.reload()
+                            return
+                        }
+                        else {
+                            throw new Error('Error deleting user')
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            }
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -58,7 +80,7 @@ const columns=[
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Opciones</DropdownMenuLabel>
                         <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleDelete}>Eliminar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

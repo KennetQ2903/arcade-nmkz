@@ -113,6 +113,7 @@ export const UserForm=() => {
                 }
             })
             .then(() => {
+                window.location.reload()
                 form.reset()
                 setOpen(false)
             })
