@@ -48,7 +48,6 @@ const columns=[
         header: '',
         cell: (info) => {
             const handleDelete=async () => {
-                console.log(JSON.stringify(info.cell.row.original.id))
                 return fetch('/api/query/deleteUserById',{
                     method: 'POST',
                     headers: {
