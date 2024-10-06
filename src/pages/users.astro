@@ -1,7 +1,24 @@
 ---
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { UserForm } from "@/components/users/UserForm"
+import { UserTable } from "@/components/users/UserTable"
 import RootLayout from "@/layouts/RootLayout.astro"
 ---
 
 <RootLayout title="Usuarios">
-	<div>Usuarios</div>
+	<Card>
+		<CardHeader>
+			<CardTitle>Usuarios</CardTitle>
+			<CardDescription
+				>La pantalla de manejo de usuarios permite a los administradores gestionar y supervisar las cuentas de los usuarios en el
+				sistema.</CardDescription
+			>
+		</CardHeader>
+		<CardContent>
+			<div class="flex justify-end mb-6">
+				<UserForm client:only="react" />
+			</div>
+			<UserTable client:load />
+		</CardContent>
+	</Card>
 </RootLayout>
