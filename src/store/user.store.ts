@@ -8,7 +8,7 @@ type Action={
     setUser: (user: User) => void
 }
 
-const initialState: User={id: '',nombre: '',email: '',role_id: 0,createdAt: ''}
+const initialState: User={id: '',name: '',email: '',rol_id: 0,created_at: '',localidad_id: null}
 
 export const useUserStore=create<State&Action>((set) => ({
     user: initialState,
