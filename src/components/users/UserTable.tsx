@@ -1,16 +1,15 @@
-import {useEffect,useState} from "react"
-import {CustomTable} from "../common/CustomTable"
+import {Badge,type BadgeProps} from "@/components/ui/badge"
+import {Button} from "@/components/ui/button"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
+import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import {Badge,type BadgeProps} from "@/components/ui/badge"
-import {Button} from "@/components/ui/button"
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import {MoreHorizontal} from "lucide-react"
+import {useEffect,useState} from "react"
 
 type QueriedUser=User&{localidad: string|null,rol: string}
 
