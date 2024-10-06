@@ -10,13 +10,19 @@ interface Props {
 }
 const { title } = Astro.props
 
-const { cookies, redirect } = Astro
+const { cookies } = Astro
 
 const accessToken = cookies.get("sb-access-token")
 const refreshToken = cookies.get("sb-refresh-token")
 
 if (!accessToken || !refreshToken) {
-	return redirect("/signin")
+	cookies.delete("sb-access-token", {
+		path: "/",
+	})
+	cookies.delete("sb-refresh-token", {
+		path: "/",
+	})
+	return Astro.redirect("/signin")
 }
 
 const { error } = await supabase.auth.setSession({
@@ -32,7 +38,7 @@ if (error) {
 		path: "/",
 	})
 
-	return redirect("/signin")
+	return Astro.redirect("/signin")
 }
 ---
 
