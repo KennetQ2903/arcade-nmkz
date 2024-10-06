@@ -17,8 +17,12 @@ export const POST: APIRoute=async ({request}) => {
         id: data?.user?.id,
         email: formData.email,
         name: formData.name,
+        lastName: formData.lastname,
         rol_id: formData.rol_id,
-        localidad_id: formData?.localidad_id||null
+        localidad_id: formData?.localidad_id||null,
+        nit: formData?.nit||null,
+        dpi: formData.dpi,
+        fecha_nacimiento: formData.fecha_nacimiento
     })
 
     if(insertError) {

@@ -7,5 +7,6 @@ export const GET: APIRoute=async () => {
     if(error) {
         return new Response(error.message,{status})
     }
+    console.log(JSON.stringify(data))
     return new Response(JSON.stringify(data),{status,headers: {'Content-Type': 'application/json'}});
 }

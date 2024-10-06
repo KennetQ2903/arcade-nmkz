@@ -18,20 +18,30 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import {zodResolver} from "@hookform/resolvers/zod"
-import {Loader2,UserPlus2} from "lucide-react"
+import {CalendarIcon,Loader2,UserPlus2} from "lucide-react"
 import {useCallback,useEffect,useState} from "react"
 import {useForm} from "react-hook-form"
 import {z} from "zod"
 import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage} from "../ui/form"
+import {Popover,PopoverContent,PopoverTrigger} from "../ui/popover"
+import {Calendar} from "../ui/calendar"
+import {cn} from "@/lib/utils"
+import {format} from "date-fns"
 
 const formSchema=z.object({
     name: z.string().min(1,{message: "Ingresa un nombre"}),
+    lastname: z.string().min(1,{message: "Ingresa un apellido"}),
     email: z.string().email({message: "Ingresa un correo valido"}),
     password: z.string().min(1,{message: "Ingresa una contraseña"}),
     rol_id: z.string({
         required_error: "Selecciona un rol"
     }),
     localidad_id: z.string().optional(),
+    nit: z.string().optional(),
+    dpi: z.string().min(8,{message: "Ingresa un DPI valido"}),
+    fecha_nacimiento: z.date({
+        required_error: "La fecha de nacimiento es obligatoria",
+    })
 })
 
 type FormValues=z.infer<typeof formSchema>
@@ -46,6 +56,13 @@ export const UserForm=() => {
         defaultValues: {
             email: "",
             password: "",
+            dpi: "",
+            nit: "",
+            name: "",
+            lastname: "",
+            rol_id: "",
+            localidad_id: "",
+            fecha_nacimiento: new Date(),
         },
         reValidateMode: "onSubmit",
     })
@@ -97,32 +114,33 @@ export const UserForm=() => {
     },[])
 
     const handleSubmit=useCallback(async (data: FormValues) => {
-        setLoading(true)
-        return fetch('/api/query/createUser',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then(res => {
-                if(res.ok) {
-                    return res
-                } else {
-                    throw new Error('Error creating user')
-                }
-            })
-            .then(() => {
-                window.location.reload()
-                form.reset()
-                setOpen(false)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(() => {
-                setLoading(false)
-            })
+        console.log(data)
+        // setLoading(true)
+        // return fetch('/api/query/createUser',{
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(data),
+        // })
+        //     .then(res => {
+        //         if(res.ok) {
+        //             return res
+        //         } else {
+        //             throw new Error('Error creating user')
+        //         }
+        //     })
+        //     .then(() => {
+        //         window.location.reload()
+        //         form.reset()
+        //         setOpen(false)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
+        //     .finally(() => {
+        //         setLoading(false)
+        //     })
     },[])
 
 
@@ -145,9 +163,48 @@ export const UserForm=() => {
                             name="name"
                             render={({field}) => (
                                 <FormItem >
-                                    <FormLabel>Nombre completo</FormLabel>
+                                    <FormLabel>Nombre</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="lastname"
+                            render={({field}) => (
+                                <FormItem >
+                                    <FormLabel>Apellido</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="dpi"
+                            render={({field}) => (
+                                <FormItem >
+                                    <FormLabel>DPI</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="nit"
+                            render={({field}) => (
+                                <FormItem >
+                                    <FormLabel>NIT (opcional)</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -162,6 +219,47 @@ export const UserForm=() => {
                                     <FormControl>
                                         <Input placeholder="tecnico@example.com" {...field} />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="fecha_nacimiento"
+                            render={({field}) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Fecha de nacimiento</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "pl-3 text-left font-normal",
+                                                        !field.value&&"text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {field.value? (
+                                                        format(field.value,"PPP")
+                                                    ):(
+                                                        <span>Seleccione una fecha</span>
+                                                    )}
+                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0" align="start">
+                                            <Calendar
+                                                mode="single"
+                                                selected={field.value}
+                                                onSelect={field.onChange}
+                                                disabled={(date) =>
+                                                    date>new Date()||date<new Date("1900-01-01")
+                                                }
+                                                initialFocus
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
                                     <FormMessage />
                                 </FormItem>
                             )}
