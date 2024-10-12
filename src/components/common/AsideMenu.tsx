@@ -2,6 +2,8 @@ import {Home,Joystick,LineChart,LogOut,Package,Package2,User,Store,TicketX} from
 
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import {useCallback} from "react"
+import {ModeToggle} from "@/components/common/ModeToggle"
+
 
 export const AsideMenu=() => {
 
@@ -110,6 +112,9 @@ export const AsideMenu=() => {
                     </Tooltip>
                 </nav>
                 <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+                    <ModeToggle />
+                </nav>
+                <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <a
