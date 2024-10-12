@@ -1,4 +1,4 @@
-import {Home,Joystick,LineChart,LogOut,Package,Package2,User,Store,Wrench,Truck} from "lucide-react"
+import {Home,Joystick,LineChart,LogOut,Package2,User,Store,Wrench,Truck} from "lucide-react"
 
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import {useCallback} from "react"
