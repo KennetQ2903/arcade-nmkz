@@ -15,7 +15,6 @@ export function ModeToggle() {
     // Almacena el tema en localStorage
     React.useEffect(() => {
         const storedTheme=localStorage.getItem("theme") as modes;
-        console.log('cual almacena??',storedTheme)
         const isDarkMode=document.documentElement.classList.contains("dark");
         setThemeState(storedTheme||(isDarkMode? "dark":"theme-light"));
     },[]);

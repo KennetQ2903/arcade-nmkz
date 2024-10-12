@@ -23,16 +23,16 @@ export const AsideMenu=() => {
                         href="/dashboard"
                         className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
                     >
-                        <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
+                        <Package2 className="h-5 w-5 transition-all" />
                         <span className="sr-only">NMKZ Arcades</span>
                     </a>
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <a
                                 href="/dashboard"
-                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <Home className="h-5 w-5 transition-all group-hover:scale-110" />
+                                <Home className="h-5 w-5 transition-all" />
                                 <span className="sr-only">Resumen</span>
                             </a>
                         </TooltipTrigger>
@@ -42,9 +42,9 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/users"
-                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <User className="h-5 w-5 transition-all group-hover:scale-110" />
+                                <User className="h-5 w-5 transition-all" />
                                 <span className="sr-only">Usuarios</span>
                             </a>
                         </TooltipTrigger>
@@ -54,9 +54,9 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/arcades"
-                                className="group flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="group flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <Joystick className="h-5 w-5 transition-all group-hover:scale-110" />
+                                <Joystick className="h-5 w-5 transition-all" />
                                 <span className="sr-only">Maquinas</span>
                             </a>
                         </TooltipTrigger>
@@ -66,7 +66,7 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/repairs"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
                                 <TicketX className="h-5 w-5" />
                                 <span className="sr-only">Reparaciones</span>
@@ -78,7 +78,7 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/providers"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
                                 <Package className="h-5 w-5" />
                                 <span className="sr-only">Proveedores</span>
@@ -90,7 +90,7 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/shops"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
                                 <Store className="h-5 w-5" />
                                 <span className="sr-only">Comercios</span>
@@ -102,7 +102,7 @@ export const AsideMenu=() => {
                         <TooltipTrigger asChild>
                             <a
                                 href="/analytics"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
                                 <LineChart className="h-5 w-5" />
                                 <span className="sr-only">Informes</span>
@@ -122,9 +122,9 @@ export const AsideMenu=() => {
                                 data-astro-prefetch="false"
                                 rel="nofollow noopener"
                                 onClick={handleLogout}
-                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className="group flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <LogOut className="h-5 w-5 transition-all group-hover:scale-110" />
+                                <LogOut className="h-5 w-5 transition-all" />
                                 <span className="sr-only">Cerrar Sesión</span>
                             </a>
                         </TooltipTrigger>
