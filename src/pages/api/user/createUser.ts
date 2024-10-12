@@ -1,10 +1,10 @@
-import {supabase} from "@/lib/supabase";
+import {supabaseAnon} from "@/lib/supabaseAnon";
 import type {APIRoute} from "astro";
 
 export const POST: APIRoute=async ({request}) => {
     const formData: Awaited<User&{password: string}>=await request.json();
 
-    const {data,error}=await supabase.auth.signUp({
+    const {data,error}=await supabaseAnon.auth.signUp({
         email: formData.email,
         password: formData.password
     })
@@ -13,7 +13,7 @@ export const POST: APIRoute=async ({request}) => {
         return new Response(error.message,{status: 500})
     }
 
-    const {error: insertError,status}=await supabase.from('usuarios').insert({
+    const {error: insertError,status}=await supabaseAnon.from('usuarios').insert({
         id: data?.user?.id,
         email: formData.email,
         name: formData.name,

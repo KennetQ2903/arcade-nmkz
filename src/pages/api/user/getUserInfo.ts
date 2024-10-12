@@ -1,13 +1,13 @@
-import {supabase} from "@/lib/supabase";
+import {supabaseAnon} from "@/lib/supabaseAnon";
 import type {APIRoute} from "astro";
 
 export const GET: APIRoute=async () => {
-    const {data: {user}}=await supabase.auth.getUser()
+    const {data: {user}}=await supabaseAnon.auth.getUser()
     if(!user) {
         return new Response("User not found",{status: 404});
     }
 
-    const userData=await supabase.from("usuarios").select("*").eq("id",user?.id).single();
+    const userData=await supabaseAnon.from("usuarios").select("*").eq("id",user?.id).single();
 
 
     if(userData.error) {

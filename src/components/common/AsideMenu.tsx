@@ -1,4 +1,4 @@
-import {Home,Joystick,LineChart,LogOut,Package,Package2,User,Store,TicketX} from "lucide-react"
+import {Home,Joystick,LineChart,LogOut,Package,Package2,User,Store,Wrench,Truck} from "lucide-react"
 
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import {useCallback} from "react"
@@ -68,7 +68,7 @@ export const AsideMenu=() => {
                                 href="/repairs"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <TicketX className="h-5 w-5" />
+                                <Wrench className="h-5 w-5" />
                                 <span className="sr-only">Reparaciones</span>
                             </a>
                         </TooltipTrigger>
@@ -80,7 +80,7 @@ export const AsideMenu=() => {
                                 href="/providers"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
-                                <Package className="h-5 w-5" />
+                                <Truck className="h-5 w-5" />
                                 <span className="sr-only">Proveedores</span>
                             </a>
                         </TooltipTrigger>

@@ -1,7 +1,19 @@
 ---
+import CreateButton from "@/components/common/CreateButton.astro"
+import { ProvidersTable } from "@/components/providers/ProvidersTable"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
+import { PackagePlus } from "lucide-react"
 ---
 
 <RootLayout title="Proveedores">
-	<div>providers</div>
+	<CRUDTemplate
+		title="Proveedores"
+		description="La pantalla de manejo de proveedores permite a los administradores gestionar y supervisar los proveedores de las maquinas en el sistema."
+	>
+		<CreateButton transitionName="createProvider" slot="createButton" href="/providers/add" title="Agregar proveedor">
+			<PackagePlus className="w-6 h-6" />
+		</CreateButton>
+		<ProvidersTable slot="table" client:load />
+	</CRUDTemplate>
 </RootLayout>

@@ -1,15 +1,14 @@
 import {Button} from "@/components/ui/button";
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import type {CellContext} from "@tanstack/react-table";
+import {navigate} from "astro:transitions/client";
 import {MoreHorizontal} from "lucide-react";
 import {useCallback} from "react";
-import type {QueriedUser} from "./UserTable";
 import {toast} from "sonner";
-import {navigate} from "astro:transitions/client";
 
-export const ContextMenu=({info}: {info: CellContext<QueriedUser,unknown>}) => {
+export const ContextMenu=({info}: {info: CellContext<IProvider,unknown>}) => {
     const handleDelete=useCallback(async () => {
-        return fetch('/api/user/deleteUserById',{
+        return fetch('/api/providers/deleteProviderById',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -18,22 +17,21 @@ export const ContextMenu=({info}: {info: CellContext<QueriedUser,unknown>}) => {
         })
             .then(res => {
                 if(res.ok) {
-                    toast.success('Usuario borrado exitosamente')
-                    window.location.reload()
+                    toast.success('Proveedor borrado exitosamente')
                     return
                 }
                 else {
-                    toast.error('Error tratando de borrar al usuario')
-                    throw new Error('Error deleting user')
+                    throw new Error('Error deleting provider')
                 }
             })
             .catch(err => {
+                toast.error('Error tratando de borrar al proveedor')
                 console.log(err)
             })
     },[info])
 
     const handleEdit=useCallback(() => {
-        navigate(`/users/edit/${info.cell.row.original.id}`)
+        navigate(`/providers/edit/${info.cell.row.original.id}`)
     },[info])
 
     return (

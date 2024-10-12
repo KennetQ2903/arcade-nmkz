@@ -1,8 +1,8 @@
-import {supabase} from "@/lib/supabase";
+import {supabaseAnon} from "@/lib/supabaseAnon";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute=async ({cookies,redirect}) => {
-  const {error}=await supabase.auth.signOut()
+  const {error}=await supabaseAnon.auth.signOut()
   if(error) {
     return new Response(error.message,{status: 500});
   }

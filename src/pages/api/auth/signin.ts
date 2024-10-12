@@ -1,6 +1,6 @@
 
+import {supabaseAnon} from "@/lib/supabaseAnon";
 import type {APIRoute} from "astro";
-import {supabase} from "../../../lib/supabase";
 
 export const POST: APIRoute=async ({request,cookies}) => {
     const formData=await request.json();
@@ -11,7 +11,7 @@ export const POST: APIRoute=async ({request,cookies}) => {
         return new Response("Email and password are required",{status: 400});
     }
 
-    const {data,error}=await supabase.auth.signInWithPassword({
+    const {data,error}=await supabaseAnon.auth.signInWithPassword({
         email,
         password,
     });

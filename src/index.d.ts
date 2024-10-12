@@ -23,3 +23,10 @@ interface IRol {
     name: string
     created_at: string
 }
+
+interface IProvider {
+    id: number
+    created_at: string
+    name: string
+    phone: string
+}

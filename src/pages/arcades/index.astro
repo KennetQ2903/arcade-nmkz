@@ -1,7 +1,17 @@
 ---
+import CreateButton from "@/components/common/CreateButton.astro"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
+import { PlusCircle } from "lucide-react"
 ---
 
 <RootLayout title="Maquinas">
-	<div>Maquinas</div>
+	<CRUDTemplate
+		title="Maquinas de Arcade"
+		description="La pantalla de manejo de maquinas permite a los administradores gestionar y supervisar las maquinas de arcade en el sistema."
+	>
+		<CreateButton transitionName="createArcade" slot="createButton" href="/arcades/add" title="Agregar maquina de arcade">
+			<PlusCircle className="w-6 h-6" />
+		</CreateButton>
+	</CRUDTemplate>
 </RootLayout>

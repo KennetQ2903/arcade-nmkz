@@ -1,7 +1,17 @@
 ---
+import CreateButton from "@/components/common/CreateButton.astro"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
+import { PlusCircle } from "lucide-react"
 ---
 
 <RootLayout title="Comercios">
-	<div>Comercios</div>
+	<CRUDTemplate
+		title="Comercios"
+		description="La pantalla de manejo de comercios permite a los administradores gestionar y supervisar los comercios en el sistema."
+	>
+		<CreateButton transitionName="createShop" slot="createButton" href="/shops/add" title="Agregar comercio">
+			<PlusCircle className="w-6 h-6" />
+		</CreateButton>
+	</CRUDTemplate>
 </RootLayout>

@@ -1,7 +1,17 @@
 ---
+import CreateButton from "@/components/common/CreateButton.astro"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
+import { TicketPlus } from "lucide-react"
 ---
 
 <RootLayout title="Reparaciones">
-	<div>Reparaciones</div>
+	<CRUDTemplate
+		title="Reparaciones"
+		description="La pantalla de manejo de reparaciones permite a los administradores gestionar y supervisar los tickets de reparaciones abiertos en el sistema."
+	>
+		<CreateButton transitionName="createTicket" slot="createButton" href="/repairs/add" title="Abrir ticket de reparacion">
+			<TicketPlus className="w-6 h-6" />
+		</CreateButton>
+	</CRUDTemplate>
 </RootLayout>

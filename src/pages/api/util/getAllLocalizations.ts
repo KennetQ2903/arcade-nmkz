@@ -1,8 +1,8 @@
-import {supabase} from "@/lib/supabase";
+import {supabaseAnon} from "@/lib/supabaseAnon";
 import type {APIRoute} from "astro";
 
 export const GET: APIRoute=async () => {
-    let {data,error,status}=await supabase
+    let {data,error,status}=await supabaseAnon
         .from('localidades')
         .select('*')
 

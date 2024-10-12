@@ -1,0 +1,18 @@
+---
+import { Button } from "../ui/button"
+
+interface Props {
+	href: string
+	title: string
+	transitionName: string
+}
+
+const { href, title, transitionName } = Astro.props
+---
+
+<a transition:name={transitionName} href={href}>
+	<Button className="justify-center gap-2">
+		<slot />
+		{title}
+	</Button>
+</a>

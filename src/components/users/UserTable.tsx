@@ -9,7 +9,7 @@ import {
 import {format} from "date-fns"
 import {useEffect,useState} from "react"
 import {ContextMenu} from "./ContextMenu"
-import {SkeletonUsers} from "./SkeletonUsers"
+import {TableSkeleton} from "../common/TableSkeleton"
 
 export type QueriedUser=User&{localidad: string|null,rol: string}
 
@@ -112,7 +112,7 @@ export const UserTable=() => {
     },[])
 
     if(loading) {
-        return <SkeletonUsers />
+        return <TableSkeleton />
     }
 
     return (

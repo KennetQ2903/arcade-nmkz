@@ -1,24 +1,19 @@
 ---
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import CreateUserButton from "@/components/users/CreateUserButton.astro"
+import CreateButton from "@/components/common/CreateButton.astro"
 import { UserTable } from "@/components/users/UserTable"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
+import { UserPlus2 } from "lucide-react"
 ---
 
 <RootLayout title="Usuarios">
-	<Card>
-		<CardHeader>
-			<CardTitle>Usuarios</CardTitle>
-			<CardDescription
-				>La pantalla de manejo de usuarios permite a los administradores gestionar y supervisar las cuentas de los usuarios en el
-				sistema.</CardDescription
-			>
-		</CardHeader>
-		<CardContent>
-			<div class="flex justify-end mb-6">
-				<CreateUserButton />
-			</div>
-			<UserTable client:load />
-		</CardContent>
-	</Card>
+	<CRUDTemplate
+		title="Usuarios"
+		description="La pantalla de manejo de usuarios permite a los administradores gestionar y supervisar las cuentas de los usuarios en elsistema."
+	>
+		<CreateButton transitionName="createUser" slot="createButton" href="/users/add" title="Crear nuevo usuario">
+			<UserPlus2 className="w-6 h-6" />
+		</CreateButton>
+		<UserTable slot="table" client:load />
+	</CRUDTemplate>
 </RootLayout>

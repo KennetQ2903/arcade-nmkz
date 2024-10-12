@@ -3,9 +3,7 @@ import {Input} from "@/components/ui/input"
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -20,6 +18,7 @@ import {Calendar} from "../ui/calendar"
 import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage} from "../ui/form"
 import {Popover,PopoverContent,PopoverTrigger} from "../ui/popover"
 import {toast} from "sonner"
+import {navigate} from "astro:transitions/client"
 
 const formSchema=z.object({
     name: z.string({
@@ -126,8 +125,8 @@ export const UserForm=() => {
             })
             .then(() => {
                 toast.success('Usuario creado con exito')
-                window.location.href='/users'
                 form.reset()
+                return navigate("/users",{history: 'push'})
             })
             .catch(err => {
                 toast.error(`Error creando usuario, codigo ${err instanceof Error? err.message:'Desconocido'}`)

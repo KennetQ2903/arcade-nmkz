@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/sonner"
 import "@/styles/globals.css"
 import { ViewTransitions } from "astro:transitions"
 import { AsideMenu } from "@/components/common/AsideMenu"
-import { supabase } from "../lib/supabase"
+import { supabaseAnon } from "@/lib/supabaseAnon"
 
 interface Props {
 	title: string
@@ -15,7 +15,7 @@ const { cookies } = Astro
 const accessToken = cookies.get("sb-access-token")
 const refreshToken = cookies.get("sb-refresh-token")
 
-const { error } = await supabase.auth.setSession({
+const { error } = await supabaseAnon.auth.setSession({
 	refresh_token: refreshToken?.value || "",
 	access_token: accessToken?.value || "",
 })
