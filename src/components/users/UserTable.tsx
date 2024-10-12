@@ -55,7 +55,7 @@ const columns=[
     columnHelper.accessor('created_at',{
         id: 'created_at',
         header: 'Creado el',
-        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm:ss'),
+        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm a'),
     }),
     columnHelper.accessor('localidad',{
         id: 'localidad',

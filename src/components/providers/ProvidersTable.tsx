@@ -23,7 +23,7 @@ const columns=[
     columnHelper.accessor('created_at',{
         id: 'created_at',
         header: 'Creado el',
-        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm:ss'),
+        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm a'),
     }),
     columnHelper.display({
         id: 'actions',
@@ -49,7 +49,6 @@ export const ProvidersTable: React.FC=() => {
             })
                 .then(res => {
                     if(res.ok) {
-                        toast.success('Se obtuvieron los proveedores exitosamente')
                         return res.json()
                     } else {
                         throw new Error('Error getting providers')
