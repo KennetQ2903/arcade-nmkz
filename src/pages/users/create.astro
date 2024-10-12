@@ -1,0 +1,18 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { UserForm } from "@/components/users/UserForm"
+import RootLayout from "@/layouts/RootLayout.astro"
+---
+
+<RootLayout title="Crear usuario">
+	<div transition:name="createUser" class="flex justify-center">
+		<Card className="max-w-2xl w-full">
+			<CardHeader>
+				<CardTitle>Nuevo Usuario</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<UserForm client:load />
+			</CardContent>
+		</Card>
+	</div>
+</RootLayout>

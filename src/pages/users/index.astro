@@ -1,6 +1,6 @@
 ---
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { UserForm } from "@/components/users/UserForm"
+import CreateUserButton from "@/components/users/CreateUserButton.astro"
 import { UserTable } from "@/components/users/UserTable"
 import RootLayout from "@/layouts/RootLayout.astro"
 ---
@@ -16,7 +16,7 @@ import RootLayout from "@/layouts/RootLayout.astro"
 		</CardHeader>
 		<CardContent>
 			<div class="flex justify-end mb-6">
-				<UserForm client:only="react" />
+				<CreateUserButton />
 			</div>
 			<UserTable client:load />
 		</CardContent>

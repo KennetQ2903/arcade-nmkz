@@ -1,4 +1,4 @@
-import {Home,Joystick,LineChart,LogOut,Package,Package2,User} from "lucide-react"
+import {Home,Joystick,LineChart,LogOut,Package,Package2,User,Store} from "lucide-react"
 
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import {useCallback} from "react"
@@ -71,6 +71,18 @@ export const AsideMenu=() => {
                             </a>
                         </TooltipTrigger>
                         <TooltipContent side="right">Proveedores</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <a
+                                href="/shops"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <Store className="h-5 w-5" />
+                                <span className="sr-only">Comercios</span>
+                            </a>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Comercios</TooltipContent>
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild>

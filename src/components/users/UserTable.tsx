@@ -1,6 +1,4 @@
 import {Badge,type BadgeProps} from "@/components/ui/badge"
-import {Button} from "@/components/ui/button"
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import {
     createColumnHelper,
@@ -8,10 +6,12 @@ import {
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import {MoreHorizontal} from "lucide-react"
+import {format} from "date-fns"
 import {useEffect,useState} from "react"
+import {ContextMenu} from "./ContextMenu"
+import {SkeletonUsers} from "./SkeletonUsers"
 
-type QueriedUser=User&{localidad: string|null,rol: string}
+export type QueriedUser=User&{localidad: string|null,rol: string}
 
 const columnHelper=createColumnHelper<QueriedUser>()
 
@@ -19,7 +19,6 @@ const rolBadgeVariant: Record<string,BadgeProps["variant"]>={
     Admin: "default",
     Tecnico: "outline",
     Empleado: "secondary",
-    Proveedor: "destructive",
 }
 
 const columns=[
@@ -38,6 +37,11 @@ const columns=[
         header: 'Correo',
         cell: info => info.getValue(),
     }),
+    columnHelper.accessor('phone',{
+        id: 'phone',
+        header: 'Telefono',
+        cell: info => info.getValue()??'N/A',
+    }),
     columnHelper.accessor('rol',{
         id: 'rol',
         header: 'Rol',
@@ -46,12 +50,12 @@ const columns=[
     columnHelper.accessor('fecha_nacimiento',{
         id: 'fecha_nacimiento',
         header: 'Fecha de Nacimiento',
-        cell: info => info.getValue(),
+        cell: info => format(info.getValue(),'dd-MM-yyyy'),
     }),
     columnHelper.accessor('created_at',{
         id: 'created_at',
         header: 'Creado el',
-        cell: info => info.getValue(),
+        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm:ss'),
     }),
     columnHelper.accessor('localidad',{
         id: 'localidad',
@@ -71,49 +75,13 @@ const columns=[
     columnHelper.display({
         id: 'actions',
         header: '',
-        cell: (info) => {
-            const handleDelete=async () => {
-                return fetch('/api/query/deleteUserById',{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id: info.cell.row.original.id})
-                })
-                    .then(res => {
-                        if(res.ok) {
-                            window.location.reload()
-                            return
-                        }
-                        else {
-                            throw new Error('Error deleting user')
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-            }
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Opciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleDelete}>Eliminar</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
+        cell: (info) => <ContextMenu info={info} />,
     })
 ]
 
 export const UserTable=() => {
     const [queriedUsers,setQueriedUsers]=useState<QueriedUser[]>([])
+    const [loading,setLoading]=useState(true)
     const table=useReactTable({
         data: queriedUsers,
         columns,
@@ -121,7 +89,8 @@ export const UserTable=() => {
     });
     useEffect(() => {
         const getAllUsers=async () => {
-            return fetch('/api/query/getAllUsers',{
+            setLoading(true)
+            return fetch('/api/user/getAllUsers',{
                 method: 'GET'
             })
                 .then(res => {
@@ -136,10 +105,15 @@ export const UserTable=() => {
                 .catch(err => {
                     console.log(err)
                 })
+                .finally(() => setLoading(false))
         }
 
         getAllUsers()
     },[])
+
+    if(loading) {
+        return <SkeletonUsers />
+    }
 
     return (
         <Table>

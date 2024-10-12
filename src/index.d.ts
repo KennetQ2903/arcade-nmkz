@@ -9,6 +9,7 @@ interface User {
     nit: string|null
     dpi: string
     fecha_nacimiento: string
+    phone: string|null
 }
 
 interface ILocalization {
