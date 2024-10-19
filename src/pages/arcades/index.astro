@@ -1,4 +1,6 @@
 ---
+import "@/styles/globals.css"
+import { ArcadeTable } from "@/components/arcades/ArcadeTable"
 import CreateButton from "@/components/common/CreateButton.astro"
 import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
@@ -13,5 +15,6 @@ import { PlusCircle } from "lucide-react"
 		<CreateButton transitionName="createArcade" slot="createButton" href="/arcades/add" title="Agregar maquina de arcade">
 			<PlusCircle className="w-6 h-6" />
 		</CreateButton>
+		<ArcadeTable slot="table" client:load />
 	</CRUDTemplate>
 </RootLayout>

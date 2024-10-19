@@ -1,0 +1,20 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import RootLayout from "@/layouts/RootLayout.astro"
+import { ArcadeForm } from "@/components/arcades/ArcadeForm"
+
+const { id } = Astro.params
+---
+
+<RootLayout title="Editar Maquina de Arcade">
+	<div transition:name="createArcade" class="flex justify-center">
+		<Card className="max-w-2xl w-full">
+			<CardHeader>
+				<CardTitle>Editar Maquina de Arcade</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<ArcadeForm action="edit" machineId={id} client:load />
+			</CardContent>
+		</Card>
+	</div>
+</RootLayout>
