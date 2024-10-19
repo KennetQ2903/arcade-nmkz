@@ -57,10 +57,10 @@ export const AsideMenu=() => {
                                 className="group flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8 hover:bg-slate-200 dark:hover:bg-slate-700/80"
                             >
                                 <Joystick className="h-5 w-5 transition-all" />
-                                <span className="sr-only">Maquinas</span>
+                                <span className="sr-only">Arcades</span>
                             </a>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Maquinas</TooltipContent>
+                        <TooltipContent side="right">Arcades</TooltipContent>
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild>
