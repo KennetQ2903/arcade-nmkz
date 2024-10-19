@@ -19,15 +19,14 @@ export const ContextMenu=({info}: {info: CellContext<QueriedUser,unknown>}) => {
             .then(res => {
                 if(res.ok) {
                     toast.success('Usuario borrado exitosamente')
-                    window.location.reload()
                     return
                 }
                 else {
-                    toast.error('Error tratando de borrar al usuario')
                     throw new Error('Error deleting user')
                 }
             })
             .catch(err => {
+                toast.error('Error tratando de borrar al usuario')
                 console.log(err)
             })
     },[info])

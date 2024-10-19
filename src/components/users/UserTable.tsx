@@ -10,6 +10,7 @@ import {format} from "date-fns"
 import {useEffect,useState} from "react"
 import {ContextMenu} from "./ContextMenu"
 import {TableSkeleton} from "../common/TableSkeleton"
+import {supabaseAnon} from "@/lib/supabaseAnon"
 
 export type QueriedUser=User&{localidad: string|null,rol: string}
 
@@ -28,7 +29,7 @@ const columns=[
         header: 'Nombre',
     }),
     columnHelper.accessor('lastname',{
-        id: 'lastName',
+        id: 'lastname',
         cell: info => info.getValue(),
         header: 'Apellido',
     }),
@@ -109,6 +110,37 @@ export const UserTable=() => {
         }
 
         getAllUsers()
+    },[])
+
+    useEffect(() => {
+        const channel=supabaseAnon
+            .channel('users-channel')
+            .on(
+                'postgres_changes',
+                {event: '*',schema: 'public',table: 'usuarios'},
+                (payload) => {
+                    if(payload.eventType==='UPDATE') {
+                        setQueriedUsers(p => p.map(user => {
+                            if(user.id===payload.new?.id) {
+                                const newUser=payload.new as User
+                                return {
+                                    ...user,
+                                    ...newUser
+                                }
+                            }
+                            return user
+                        }))
+                    } else if(payload.eventType==='DELETE') {
+                        setQueriedUsers(user => user.filter(u => u.id!==payload.old.id))
+                    }
+                }
+            )
+            .subscribe()
+
+        return () => {
+            channel.unsubscribe()
+            supabaseAnon.removeChannel(channel)
+        }
     },[])
 
     if(loading) {

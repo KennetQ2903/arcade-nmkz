@@ -1,9 +1,19 @@
 ---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import RootLayout from "@/layouts/RootLayout.astro"
-
+import { UserForm } from "@/components/users/UserForm"
 const { id } = Astro.params
 ---
 
-<RootLayout title="Editar usuario">
-	<div>Editar usuario {id}</div>
+<RootLayout title="Editar Usuario">
+	<div transition:name="createProvider" class="flex justify-center">
+		<Card className="max-w-2xl w-full">
+			<CardHeader>
+				<CardTitle>Editar Usuario</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<UserForm action="edit" userId={id} client:load />
+			</CardContent>
+		</Card>
+	</div>
 </RootLayout>

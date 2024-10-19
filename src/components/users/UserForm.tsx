@@ -11,7 +11,7 @@ import {cn} from "@/lib/utils"
 import {zodResolver} from "@hookform/resolvers/zod"
 import {format} from "date-fns"
 import {CalendarIcon,Loader2} from "lucide-react"
-import {useCallback,useEffect,useState} from "react"
+import {act,useCallback,useEffect,useState} from "react"
 import {useForm} from "react-hook-form"
 import {z} from "zod"
 import {Calendar} from "../ui/calendar"
@@ -49,14 +49,42 @@ const formSchema=z.object({
     })
 })
 
+const formEditSchema=z.object({
+    name: z.string({
+        required_error: "Ingresa un nombre"
+    }),
+    lastname: z.string({
+        required_error: "Ingresa un apellido"
+    }),
+    phone: z.string({
+        required_error: "Ingresa un telefono"
+    }),
+    rol_id: z.string({
+        required_error: "Selecciona un rol"
+    }),
+    localidad_id: z.string().optional(),
+    nit: z.string().optional(),
+    dpi: z.string({
+        required_error: "Ingresa un DPI valido"
+    }),
+    fecha_nacimiento: z.date({
+        required_error: "La fecha de nacimiento es obligatoria",
+    })
+})
+
 type FormValues=z.infer<typeof formSchema>
 
-export const UserForm=() => {
+interface Props {
+    action: 'edit'|'add'
+    userId?: string
+}
+
+export const UserForm: React.FC<Props>=({action,userId=''}) => {
     const [roles,setRoles]=useState<IRol[]>([])
     const [localidades,setLocalidades]=useState<ILocalization[]>([])
     const [loading,setLoading]=useState(false)
     const form=useForm<FormValues>({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(action==='edit'? formEditSchema:formSchema),
         reValidateMode: "onSubmit",
     })
 
@@ -103,17 +131,53 @@ export const UserForm=() => {
     },[])
 
     useEffect(() => {
+        if(action==='edit') {
+            const getProvider=async () => {
+                return fetch(`/api/user/getUserById/${userId}`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(res => {
+                        if(res.ok) {
+                            return res.json()
+                        } else {
+                            throw new Error('Error getting user')
+                        }
+                    })
+                    .then((data) => {
+                        form.reset({
+                            ...data,
+                            rol_id: data.rol_id.toString(),
+                            localidad_id: data.localidad_id?.toString(),
+                            phone: data?.phone??'',
+                            fecha_nacimiento: new Date(data.fecha_nacimiento)
+                        })
+                        form.setValue('localidad_id',data.localidad_id?.toString())
+                        form.setValue('rol_id',data.rol_id?.toString())
+                    })
+                    .catch(err => {
+                        toast.error('Error obteniendo la información del usuario')
+                        console.log(err)
+                    })
+            }
+            getProvider()
+        }
+    },[])
+
+    useEffect(() => {
         form.reset()
     },[])
 
     const handleSubmit=useCallback(async (data: FormValues) => {
         setLoading(true)
-        return fetch('/api/user/createUser',{
+        return fetch(`/api/user/${action==='add'? 'createUser':'updateUser'}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data,id: userId}),
         })
             .then(res => {
                 if(res.ok) {
@@ -135,7 +199,7 @@ export const UserForm=() => {
             .finally(() => {
                 setLoading(false)
             })
-    },[])
+    },[userId,action])
 
 
     return (
@@ -193,19 +257,21 @@ export const UserForm=() => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({field}) => (
-                        <FormItem >
-                            <FormLabel>Correo electrónico</FormLabel>
-                            <FormControl>
-                                <Input placeholder="tecnico@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                {action==='add'? (
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({field}) => (
+                            <FormItem >
+                                <FormLabel>Correo electrónico</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="tecnico@example.com" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                ):null}
                 <FormField
                     control={form.control}
                     name="phone"
@@ -247,6 +313,7 @@ export const UserForm=() => {
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                         mode="single"
+                                        fromDate={field.value? new Date(field.value):undefined}
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) =>
@@ -260,26 +327,28 @@ export const UserForm=() => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({field}) => (
-                        <FormItem >
-                            <FormLabel>Contraseña</FormLabel>
-                            <FormControl>
-                                <Input type="password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                {action==='add'? (
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({field}) => (
+                            <FormItem >
+                                <FormLabel>Contraseña</FormLabel>
+                                <FormControl>
+                                    <Input type="password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                ):null}
                 <FormField
                     control={form.control}
                     name="rol_id"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Rol</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Seleccione un rol" />
@@ -305,7 +374,7 @@ export const UserForm=() => {
                     render={({field}) => (
                         <FormItem >
                             <FormLabel>Localidad (opcional)</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Seleccione una localidad" />
