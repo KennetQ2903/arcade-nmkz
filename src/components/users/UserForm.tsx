@@ -131,8 +131,7 @@ export const UserForm: React.FC<Props>=({action,userId=''}) => {
         form.reset()
     },[])
 
-    const handleSubmit=useCallback(async (data: FormValues) => {
-        setLoading(true)
+    const saveChanges=useCallback(async (data: FormValues) => {
         return fetch(`/api/user/${action==='add'? 'createUser':'updateUser'}`,{
             method: 'POST',
             headers: {
@@ -144,22 +143,32 @@ export const UserForm: React.FC<Props>=({action,userId=''}) => {
                 if(res.ok) {
                     return res
                 } else {
-                    toast.error('Error creando usuario')
-                    throw new Error('Error creating user')
+                    throw new Error(res?.statusText||'Error desconocido')
                 }
             })
             .then(() => {
-                toast.success('Usuario creado con exito')
-                form.reset()
-                return navigate("/users",{history: 'push'})
-            })
-            .catch(err => {
-                toast.error(`Error creando usuario, codigo ${err instanceof Error? err.message:'Desconocido'}`)
-                console.log(err)
+                return
             })
             .finally(() => {
                 setLoading(false)
             })
+    },[])
+
+    const handleSubmit=useCallback(async (data: FormValues) => {
+        setLoading(true)
+        toast.promise(() => saveChanges(data),{
+            loading: 'Guardando cambios...',
+            success: () => {
+                setLoading(false)
+                form.reset()
+                setTimeout(() => navigate("/users",{history: 'push'}),500)
+                return 'Cambios guardados exitosamente'
+            },
+            error: (err) => {
+                setLoading(false)
+                return `Error creando usuario, codigo ${err instanceof Error? err.message:'Desconocido'}`
+            },
+        });
     },[userId,action])
 
 
