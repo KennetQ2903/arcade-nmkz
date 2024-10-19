@@ -1,5 +1,6 @@
 ---
 import CreateButton from "@/components/common/CreateButton.astro"
+import { ShopsTable } from "@/components/shops/ShopsTable"
 import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
 import { PlusCircle } from "lucide-react"
@@ -13,5 +14,6 @@ import { PlusCircle } from "lucide-react"
 		<CreateButton transitionName="createShop" slot="createButton" href="/shops/add" title="Agregar comercio">
 			<PlusCircle className="w-6 h-6" />
 		</CreateButton>
+		<ShopsTable slot="table" client:load />
 	</CRUDTemplate>
 </RootLayout>

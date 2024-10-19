@@ -30,3 +30,13 @@ interface IProvider {
     name: string
     phone: string
 }
+
+interface IShop {
+    id: number
+    created_at: string
+    name: string,
+    localidad_id: number,
+    localidad: string
+    direccion_completa: string,
+    phone: string,
+}

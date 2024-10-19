@@ -1,0 +1,18 @@
+---
+import { ShopForm } from "@/components/shops/ShopForm"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import RootLayout from "@/layouts/RootLayout.astro"
+---
+
+<RootLayout title="Crear comercio">
+	<div transition:name="createShop" class="flex justify-center">
+		<Card className="max-w-2xl w-full">
+			<CardHeader>
+				<CardTitle>Nuevo Comercio</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<ShopForm action="add" client:load />
+			</CardContent>
+		</Card>
+	</div>
+</RootLayout>

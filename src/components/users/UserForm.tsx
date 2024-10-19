@@ -11,7 +11,7 @@ import {cn} from "@/lib/utils"
 import {zodResolver} from "@hookform/resolvers/zod"
 import {format} from "date-fns"
 import {CalendarIcon,Loader2} from "lucide-react"
-import {act,useCallback,useEffect,useState} from "react"
+import {useCallback,useEffect,useState} from "react"
 import {useForm} from "react-hook-form"
 import {z} from "zod"
 import {Calendar} from "../ui/calendar"
@@ -19,6 +19,8 @@ import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage} from "../ui/f
 import {Popover,PopoverContent,PopoverTrigger} from "../ui/popover"
 import {toast} from "sonner"
 import {navigate} from "astro:transitions/client"
+import {useGetLocalizations} from "@/hooks/useGetLocalizations"
+import {useGetRoles} from "@/hooks/useGetRoles"
 
 const formSchema=z.object({
     name: z.string({
@@ -80,55 +82,14 @@ interface Props {
 }
 
 export const UserForm: React.FC<Props>=({action,userId=''}) => {
-    const [roles,setRoles]=useState<IRol[]>([])
-    const [localidades,setLocalidades]=useState<ILocalization[]>([])
+    const {localidades}=useGetLocalizations()
+    const {roles}=useGetRoles()
     const [loading,setLoading]=useState(false)
     const form=useForm<FormValues>({
         resolver: zodResolver(action==='edit'? formEditSchema:formSchema),
         reValidateMode: "onSubmit",
     })
 
-    useEffect(() => {
-        const getAllRoles=async () => {
-            return fetch('/api/util/getAllRoles',{
-                method: 'GET'
-            })
-                .then(res => {
-                    if(res.ok) {
-                        return res.json()
-                    } else {
-                        throw new Error('Error getting roles')
-                    }
-                })
-                .then(setRoles)
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-
-        getAllRoles()
-    },[])
-
-    useEffect(() => {
-        const getAllLocalities=async () => {
-            return fetch('/api/util/getAllLocalizations',{
-                method: 'GET'
-            })
-                .then(res => {
-                    if(res.ok) {
-                        return res.json()
-                    } else {
-                        throw new Error('Error getting localities')
-                    }
-                })
-                .then(setLocalidades)
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-
-        getAllLocalities()
-    },[])
 
     useEffect(() => {
         if(action==='edit') {
