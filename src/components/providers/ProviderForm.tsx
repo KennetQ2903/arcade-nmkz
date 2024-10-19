@@ -60,8 +60,7 @@ export const ProviderForm: React.FC<Props>=({action,providerId}) => {
         }
     },[])
 
-    const handleSubmit=useCallback(async (data: FormValues) => {
-        setLoading(true)
+    const saveChanges=useCallback(async (data: FormValues) => {
         return fetch(`/api/providers/${action==='add'? 'createProvider':'updateProvider'}`,{
             method: 'POST',
             headers: {
@@ -71,19 +70,31 @@ export const ProviderForm: React.FC<Props>=({action,providerId}) => {
         })
             .then(res => {
                 if(res.ok) {
-                    return navigate("/providers",{history: 'push'})
+                    return 
                 } else {
-
                     throw new Error('Error creating provider')
                 }
-            })
-            .catch(err => {
-                toast.error('Error creando proveedor')
-                console.log(err)
             })
             .finally(() => {
                 setLoading(false)
             })
+    },[])
+
+    const handleSubmit=useCallback(async (data: FormValues) => {
+        setLoading(true)
+        toast.promise(() => saveChanges(data),{
+            loading: 'Guardando cambios...',
+            success: () => {
+                setLoading(false)
+                form.reset()
+                setTimeout(() => navigate("/providers",{history: 'push'}),500)
+                return 'Cambios guardados exitosamente'
+            },
+            error: (err) => {
+                setLoading(false)
+                return `Error guardando proveedor, codigo ${err instanceof Error? err.message:'Desconocido'}`
+            },
+        });
     },[])
 
     return (

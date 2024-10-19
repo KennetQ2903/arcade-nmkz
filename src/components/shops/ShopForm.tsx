@@ -42,8 +42,7 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
         reValidateMode: "onSubmit",
     })
 
-    const handleSubmit=React.useCallback(async (data: FormValues) => {
-        setLoading(true)
+    const saveChanges=React.useCallback(async (data: FormValues) => {
         return fetch(`/api/shops/${action==='add'? 'createShop':'updateShop'}`,{
             method: 'POST',
             headers: {
@@ -53,19 +52,31 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
         })
             .then(res => {
                 if(res.ok) {
-                    return navigate("/shops",{history: 'push'})
+                    return 
                 } else {
-
                     throw new Error('Error creating shop')
                 }
-            })
-            .catch(err => {
-                toast.error(`Error ${action==='add'? 'creando':'editando'} el comercio`)
-                console.log(err)
             })
             .finally(() => {
                 setLoading(false)
             })
+    },[])
+
+    const handleSubmit=React.useCallback(async (data: FormValues) => {
+        setLoading(true)
+        toast.promise(() => saveChanges(data),{
+            loading: 'Guardando cambios...',
+            success: () => {
+                setLoading(false)
+                form.reset()
+                setTimeout(() => navigate("/shops",{history: 'push'}),500)
+                return 'Cambios guardados exitosamente'
+            },
+            error: (err) => {
+                setLoading(false)
+                return `Error guardando comercio, codigo ${err instanceof Error? err.message:'Desconocido'}`
+            },
+        });
     },[shopId,action])
 
     React.useEffect(() => {
