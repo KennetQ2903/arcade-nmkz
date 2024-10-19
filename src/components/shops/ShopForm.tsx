@@ -86,6 +86,7 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
                     })
                     .then(data => {
                         form.reset(data)
+                        form.setValue('localidad_id',data.localidad_id?.toString())
                     })
                     .catch(err => {
                         toast.error('Error obteniendo la información del comercio')
