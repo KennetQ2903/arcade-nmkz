@@ -38,7 +38,7 @@ const columns=[
     columnHelper.accessor('repair_finished_at',{
         id: 'repair_finished_at',
         header: 'Reparacion finalizada el',
-        cell: info => info?.getValue()? format(info.getValue(),'dd-MM-yyyy HH:mm a'):<Badge variant="secondary">En curso</Badge>,
+        cell: info => info?.getValue()? format(info.getValue(),'dd-MM-yyyy'):<Badge variant="secondary">En curso</Badge>,
     }),
     columnHelper.display({
         id: 'actions',

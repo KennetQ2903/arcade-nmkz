@@ -1,36 +1,37 @@
 import {Button} from "@/components/ui/button";
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import type {CellContext} from "@tanstack/react-table";
-import {navigate} from "astro:transitions/client";
 import {MoreHorizontal} from "lucide-react";
 import {useCallback} from "react";
 import {toast} from "sonner";
 
 export const ContextMenu=({info}: {info: CellContext<IRepairTicket,unknown>}) => {
-    const handleDelete=useCallback(async () => {
-        return fetch('/api/repairs/deleteTicketById',{
+
+    const handleCloseTicket=useCallback(async () => {
+        return fetch('/api/repairs/closeTicket',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({id: info.cell.row.original.ticket_id})
+            body: JSON.stringify({ticket_id: info.cell.row.original.ticket_id})
         })
             .then(res => {
                 if(res.ok) {
-                    toast.success('Ticket borrado exitosamente')
+                    toast.success('Ticket cerrado exitosamente')
                     return
                 }
+                else if(res.status===404) {
+                    toast.error('Ticket no encontrado')
+                }
                 else {
-                    throw new Error('Error deleting ticket')
+                    throw new Error('Error cerrando ticket')
                 }
             })
             .catch(err => {
-                toast.error('Error tratando de borrar el ticket')
+                toast.error('Error tratando de cerrar el ticket')
                 console.log(err)
             })
-    },[info])
-
-    const handleCloseTicket=useCallback(async () => {},[])
+    },[])
 
     return (
         <DropdownMenu>
