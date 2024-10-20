@@ -30,10 +30,6 @@ export const ContextMenu=({info}: {info: CellContext<IRepairTicket,unknown>}) =>
             })
     },[info])
 
-    const handleEdit=useCallback(() => {
-        navigate(`/repairs/edit/${info.cell.row.original.ticket_id}`)
-    },[info])
-
     const handleCloseTicket=useCallback(async () => {},[])
 
     return (
@@ -46,8 +42,6 @@ export const ContextMenu=({info}: {info: CellContext<IRepairTicket,unknown>}) =>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Opciones</DropdownMenuLabel>
-                <DropdownMenuItem onClick={handleEdit}>Editar</DropdownMenuItem>
-                <DropdownMenuItem onClick={handleDelete}>Eliminar</DropdownMenuItem>
                 <DropdownMenuItem onClick={handleCloseTicket}>Cerrar ticket</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

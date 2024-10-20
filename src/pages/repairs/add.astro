@@ -1,0 +1,18 @@
+---
+import { RepairsForm } from "@/components/repairs/RepairsForm"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import RootLayout from "@/layouts/RootLayout.astro"
+---
+
+<RootLayout title="Abrir ticket">
+	<div transition:name="createTicket" class="flex justify-center">
+		<Card className="max-w-2xl w-full">
+			<CardHeader>
+				<CardTitle>Abrir ticket de reparación</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<RepairsForm action="add" client:load />
+			</CardContent>
+		</Card>
+	</div>
+</RootLayout>
