@@ -4,6 +4,7 @@ import CreateButton from "@/components/common/CreateButton.astro"
 import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
 import RootLayout from "@/layouts/RootLayout.astro"
 import { TicketPlus } from "lucide-react"
+import { RepairsTable } from "@/components/repairs/RepairsTable"
 ---
 
 <RootLayout title="Reparaciones">
@@ -14,5 +15,6 @@ import { TicketPlus } from "lucide-react"
 		<CreateButton transitionName="createTicket" slot="createButton" href="/repairs/add" title="Abrir ticket de reparacion">
 			<TicketPlus className="w-6 h-6" />
 		</CreateButton>
+		<RepairsTable slot="table" client:load />
 	</CRUDTemplate>
 </RootLayout>

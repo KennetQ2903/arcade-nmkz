@@ -95,3 +95,15 @@ enum ArcadeMachineHealthStatus {
     UnderRepair="Under Repair",         // En reparación
     Assembling="Assembling"             // En ensamblaje
 }
+
+interface IRepairTicket {
+    ticket_id: number
+    created_at: string
+    machine_id: number
+    machine_serial: string
+    machine_status: string
+    technician_id: number
+    technician: string
+    repair_started_at: string
+    repair_finished_at: string|null
+}
