@@ -35,6 +35,11 @@ const columns=[
         header: 'Direccion',
         cell: info => info.getValue(),
     }),
+    columnHelper.accessor('type',{
+        id: 'type',
+        header: 'Tipo de comercio',
+        cell: info => info.getValue(),
+    }),
     columnHelper.display({
         id: 'actions',
         header: '',

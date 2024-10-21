@@ -16,6 +16,10 @@ interface Props {
     shopId?: string
 }
 
+const SHOP_TYPES=[
+    {id: 'Minorista',name: 'Minorista'},
+    {id: 'Mayorista',name: 'Mayorista'}
+]
 
 const formSchema=z.object({
     name: z.string({
@@ -29,6 +33,9 @@ const formSchema=z.object({
     }),
     direccion_completa: z.string({
         required_error: "Ingresa una direccion"
+    }),
+    type: z.string({
+        required_error: "Seleccione un tipo de comercio"
     })
 })
 
@@ -98,6 +105,7 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
                     .then(data => {
                         form.reset(data)
                         form.setValue('localidad_id',data.localidad_id?.toString())
+                        form.setValue('type',data.type?.toString())
                     })
                     .catch(err => {
                         toast.error('Error obteniendo la información del comercio')
@@ -151,6 +159,32 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
                                 </FormControl>
                                 <SelectContent>
                                     {localidades.map((localidad) => (
+                                        <SelectItem
+                                            key={localidad.id}
+                                            value={localidad.id.toString()}
+                                        >{localidad.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="type"
+                    render={({field}) => (
+                        <FormItem >
+                            <FormLabel>Tipo de comercio</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Seleccione un tipo de comercio" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {SHOP_TYPES.map((localidad) => (
                                         <SelectItem
                                             key={localidad.id}
                                             value={localidad.id.toString()}

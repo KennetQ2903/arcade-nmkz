@@ -39,6 +39,7 @@ interface IShop {
     localidad: string
     direccion_completa: string,
     phone: string,
+    type: 'Minorista'|'Mayorista'
 }
 
 interface IArcadeMachineState {

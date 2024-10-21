@@ -9,6 +9,7 @@ export const POST: APIRoute=async ({request}) => {
         phone: formData.phone,
         localidad_id: formData.localidad_id,
         direccion_completa: formData.direccion_completa,
+        type: formData.type
     }])
         .eq('id',formData.id)
         .single()
