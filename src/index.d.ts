@@ -40,6 +40,9 @@ interface IShop {
     direccion_completa: string,
     phone: string,
     type: 'Minorista'|'Mayorista'
+    fixed_amount: number
+    percentage: number
+    last_negotiation_date: string
 }
 
 interface IArcadeMachineState {

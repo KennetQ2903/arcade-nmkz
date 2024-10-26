@@ -9,7 +9,10 @@ export const POST: APIRoute=async ({request}) => {
         phone: formData.phone,
         localidad_id: formData.localidad_id,
         direccion_completa: formData.direccion_completa,
-        type: formData.type
+        type: formData.type,
+        fixed_amount: formData.fixed_amount,
+        percentage: formData.percentage,
+        last_negotiation_date: formData.last_negotiation_date,
     }])
         .eq('id',formData.id)
         .single()
@@ -17,5 +20,5 @@ export const POST: APIRoute=async ({request}) => {
         return new Response(error.message,{status})
     }
 
-    return new Response("Shop created",{status: 201})
+    return new Response("Shop updated",{status: 200})
 }

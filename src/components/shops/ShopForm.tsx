@@ -8,8 +8,12 @@ import {z} from "zod"
 import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage} from "../ui/form"
 import {Input} from "../ui/input"
 import {Button} from "../ui/button"
-import {Loader2} from "lucide-react"
+import {CalendarIcon,Loader2} from "lucide-react"
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "../ui/select"
+import {Popover,PopoverContent,PopoverTrigger} from "../ui/popover"
+import {format} from "date-fns"
+import {cn} from "@/lib/utils"
+import {Calendar} from "../ui/calendar"
 
 interface Props {
     action: 'edit'|'add'
@@ -36,7 +40,26 @@ const formSchema=z.object({
     }),
     type: z.string({
         required_error: "Seleccione un tipo de comercio"
-    })
+    }),
+    fixed_amount: z
+        .coerce
+        .number({invalid_type_error: "Debe ser un número"})
+        .min(0,{message: "La cantidad fija debe ser mayor o igual a 0"})
+        .optional(),
+    percentage: z
+        .coerce
+        .number({invalid_type_error: "Debe ser un número"})
+        .min(0,{message: "El porcentaje debe ser mayor o igual a 0"})
+        .max(100,{message: "El porcentaje no puede ser mayor a 100"})
+        .optional(),
+    last_negotiation_date: z.coerce.date().optional(),
+}).refine(data => data.type!=="Minorista"||data.fixed_amount!==undefined,{
+    message: "Debe ingresar una cantidad fija para minoristas",
+    path: ["fixed_amount"]
+})
+    .refine(data => data.type!=="Mayorista"||data.percentage!==undefined,{
+        message: "Debe ingresar un porcentaje para mayoristas",
+        path: ["percentage"]
 })
 
 type FormValues=z.infer<typeof formSchema>
@@ -115,6 +138,7 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
             getShop()
         }
     },[shopId])
+
 
     return (
         <Form {...form}>
@@ -206,6 +230,74 @@ export const ShopForm: React.FC<Props>=({action,shopId=''}) => {
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="fixed_amount"
+                    render={({field}) => (
+                        <FormItem >
+                            <FormLabel>Cantidad fija de recaudación (Minoristas)</FormLabel>
+                            <FormControl>
+                                <Input type="number" step="0.01" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="percentage"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Porcentaje de recaudación (Mayoristas)</FormLabel>
+                            <FormControl>
+                                <Input type="number" step="0.01" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="last_negotiation_date"
+                    render={({field}) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Fecha de última negociación</FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                "pl-3 text-left font-normal",
+                                                !field.value&&"text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value? (
+                                                format(field.value,"MM/dd/yyyy")
+                                            ):(
+                                                <span>Seleccione una fecha</span>
+                                            )}
+                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        fromDate={field.value? new Date(field.value):undefined}
+                                        selected={field.value}
+                                        onSelect={field.onChange}
+                                        disabled={(date) =>
+                                            date>new Date()||date<new Date("1900-01-01")
+                                        }
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
                             <FormMessage />
                         </FormItem>
                     )}

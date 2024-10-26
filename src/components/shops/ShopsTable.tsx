@@ -6,6 +6,7 @@ import {toast} from "sonner"
 import {TableSkeleton} from "../common/TableSkeleton"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import {supabaseAnon} from "@/lib/supabaseAnon"
+import {formatCurrency} from "@/lib/formatCurrency"
 
 const columnHelper=createColumnHelper<IShop>()
 
@@ -20,10 +21,10 @@ const columns=[
         header: 'Telefono',
         cell: info => info.getValue()??'N/A',
     }),
-    columnHelper.accessor('created_at',{
-        id: 'created_at',
-        header: 'Creado el',
-        cell: info => format(info.getValue(),'dd-MM-yyyy HH:mm a'),
+    columnHelper.accessor('last_negotiation_date',{
+        id: 'last_negotiation_date',
+        header: 'Ultima negociación',
+        cell: info => format(info.getValue(),'dd-MM-yyyy'),
     }),
     columnHelper.accessor('localidad',{
         id: 'localidad',
@@ -39,6 +40,16 @@ const columns=[
         id: 'type',
         header: 'Tipo de comercio',
         cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('fixed_amount',{
+        id: 'fixed_amount',
+        header: 'Cantidad Fija',
+        cell: info => info?.getValue()? formatCurrency(info.getValue()):'N/A',
+    }),
+    columnHelper.accessor('percentage',{
+        id: 'percentage',
+        header: 'Porcentaje',
+        cell: info => info?.getValue()? `${info.getValue()}%`:'N/A',
     }),
     columnHelper.display({
         id: 'actions',
