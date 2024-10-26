@@ -111,3 +111,15 @@ interface IRepairTicket {
     repair_started_at: string
     repair_finished_at: string|null
 }
+
+interface IRevenue {
+    id: number
+    recorded_at: string
+    shop_id: number
+    shop: string
+    machine_id: number
+    machine_serial: string
+    total_amount: number
+    shop_revenue: number
+    company_revenue: number
+}

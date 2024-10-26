@@ -1,0 +1,19 @@
+---
+import { AnalyticsTable } from "@/components/analytics/AnalyticsTable"
+import { GenerateResumenButton } from "@/components/analytics/GenerateResumenButton"
+import CRUDTemplate from "@/layouts/CRUDTemplate.astro"
+import RootLayout from "@/layouts/RootLayout.astro"
+import { FileLineChart } from "lucide-react"
+---
+
+<RootLayout title="Informes">
+	<CRUDTemplate
+		title="Informes"
+		description="La pantalla de informes permite a los administradores visualizar y analizar las recaudaciones de los comercios en el sistema."
+	>
+		<!-- <GenerateResumenButton slot="createButton" title="Generar resumen" client:load>
+			<FileLineChart className="w-6 h-6" />
+		</GenerateResumenButton> -->
+		<AnalyticsTable slot="table" client:load />
+	</CRUDTemplate>
+</RootLayout>
