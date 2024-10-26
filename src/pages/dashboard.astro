@@ -1,7 +1,21 @@
 ---
+import { ShopsRevenueChart } from "@/components/dashboard/ShopsRevenueChart"
+import { CompanyProfit } from "@/components/dashboard/CompanyProfit"
+import { ProvidersChart } from "@/components/dashboard/ProvidersChart"
+import { TicketsChart } from "@/components/dashboard/TicketsChart"
+import { MachinesChart } from "@/components/dashboard/MachinesChart"
 import RootLayout from "@/layouts/RootLayout.astro"
 ---
 
 <RootLayout title="Dashboard">
-	<div>Dashboard</div>
+	<h1 class="text-2xl font-semibold">NMKZ Arcades - <span class="dark:text-indigo-400 text-pink-500">Métricas</span></h1>
+	<div class="grid grid-cols-4 gap-4">
+		<ShopsRevenueChart client:load />
+		<ProvidersChart client:load />
+		<MachinesChart client:load />
+		<TicketsChart client:load />
+	</div>
+	<div class="grid grid-cols-1 gap-4">
+		<CompanyProfit client:load />
+	</div>
 </RootLayout>
