@@ -3,7 +3,7 @@ import generatePDF from "react-to-pdf"
 import {toast} from "sonner"
 
 export const useDownloadPDF=() => {
-    const tableRef=useRef()
+    const tableRef=useRef<HTMLTableElement>(null)
     const handleDownload=useCallback(async () => {
         const response=await generatePDF(tableRef,{filename: `resumen-${new Date().toISOString()}.pdf`})
         if(!response) {
